@@ -19,6 +19,8 @@ class ViewController: UIViewController,PresenterDelegate {
     var topCollectionview: UICollectionView!
     var startCollectionview: UICollectionView!
     
+    var activityView: UIActivityIndicatorView?
+    
     var cellId = "repoCell"
     let caption = "View All"
     let scrollView: UIScrollView = {
@@ -36,6 +38,17 @@ class ViewController: UIViewController,PresenterDelegate {
         return label
     }()
     
+    
+    let  messageLabel: UILabel = {
+        let label =   UILabel()
+        label.text = "Fecthing github profile data. Please wait ..."
+        label.textAlignment = .center
+        label.numberOfLines = 2
+        label.textColor = UIColor.gray
+        label.font = UIFont(name:"SourceSansPro-regular", size: 15)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,6 +69,16 @@ class ViewController: UIViewController,PresenterDelegate {
         headerLabel.leadingAnchor.constraint(equalTo: guide.leadingAnchor).isActive = true
         headerLabel.topAnchor.constraint(equalTo: guide.topAnchor, constant: 16).isActive = true
         headerLabel.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        
+        
+        self.view.addSubview(messageLabel)
+        messageLabel.translatesAutoresizingMaskIntoConstraints = false
+        messageLabel.trailingAnchor.constraint(equalTo: guide.trailingAnchor, constant: -16).isActive = true
+        messageLabel.leadingAnchor.constraint(equalTo: guide.leadingAnchor, constant: 16).isActive = true
+        messageLabel.topAnchor.constraint(equalTo: headerLabel.bottomAnchor, constant: 16).isActive = true
+        messageLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        
         self.presenter?.fetchProfile()
         
         
@@ -97,13 +120,11 @@ class ViewController: UIViewController,PresenterDelegate {
         viewAllPinnButton.topAnchor.constraint(equalTo: bioView.bottomAnchor).isActive = true
         viewAllPinnButton.addTarget(self, action: #selector(self.loadAllPinnedRepos), for: .touchUpInside)
         
-        
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: self.view.frame.width-32, height: 164)
         layout.minimumLineSpacing = 15
         layout.scrollDirection = .vertical
         let pinnedFrame =  CGRect(x: 16, y: 248, width: self.view.frame.width - 32, height: 525)
-        
         
         pinCollectionview = UICollectionView(frame: pinnedFrame, collectionViewLayout: layout)
         pinCollectionview?.register(RepositoryCell.self, forCellWithReuseIdentifier: cellId)
@@ -112,7 +133,9 @@ class ViewController: UIViewController,PresenterDelegate {
         pinCollectionview.dataSource = self
         pinCollectionview.delegate = self
         pinCollectionview.bounces = true
+        pinCollectionview.bounces = true
         pinCollectionview.alwaysBounceVertical = true
+        
         let pinnedRefresher = UIRefreshControl()
         
         pinnedRefresher.attributedTitle = NSAttributedString(string: "Load more pinned repos")
@@ -265,63 +288,7 @@ class ViewController: UIViewController,PresenterDelegate {
     }
     
     
-    override func viewWillAppear(_ animated: Bool) {
-        
-    }
     
-    @objc func loadMorePinnedRepos(refreshControl: UIRefreshControl) {
-        
-        if let repos = presenter?.loadMorePinnedRepors(count: profile.pinnedRepositories.count){
-            self.startRepos = repos
-            self.pinCollectionview.reloadData()
-        }
-        
-        refreshControl.endRefreshing()
-    }
-    
-    @objc func loadMoreTopRepos(refreshControl: UIRefreshControl) {
-        
-        if let repos = presenter?.loadMoreTopRepors(count: profile.topRepositories.count) {
-            self.topRepos = repos
-            self.topCollectionview.reloadData()
-        }
-        
-        refreshControl.endRefreshing()
-    }
-    
-    @objc func loadMoreStartRepos(refreshControl: UIRefreshControl) {
-        
-        if let repos = presenter?.loadMoreStartedRepors(count: profile.startedRepositories.count) {
-            self.startRepos = repos
-            self.startCollectionview.reloadData()
-        }
-        
-        refreshControl.endRefreshing()
-    }
-    @objc func loadAllPinnedRepos() {
-        
-        if let repos = presenter?.loadMorePinnedRepors(count: profile.pinnedRepositories.count){
-            self.startRepos = repos
-            self.pinCollectionview.reloadData()
-        }
-    }
-    
-    @objc func loadAllTopRepos() {
-        
-        if let repos = presenter?.loadMoreTopRepors(count: profile.topRepositories.count) {
-            self.topRepos = repos
-            self.topCollectionview.reloadData()
-        }
-    }
-    
-    @objc func loadAllStartRepos() {
-        
-        if let repos = presenter?.loadMoreStartedRepors(count: profile.startedRepositories.count) {
-            self.startRepos = repos
-            self.startCollectionview.reloadData()
-        }
-    }
- 
     
     private func getUnderlineButton(buttonText:String) -> UIButton {
         let  underLineButton: UIButton = {
@@ -390,41 +357,120 @@ class ViewController: UIViewController,PresenterDelegate {
         
         return listLabel
     }
+    
+    
     func render(errorMessage: String) {
+        messageLabel.text = "ERROR: Unable to fetch github data. please verify github security token."
+        messageLabel.textColor = UIColor.red
+        messageLabel.isHidden = false
         print(errorMessage)
     }
     
     func renderLoading() {
-        print("dff")
+        
+        
     }
     
     func renderProfile(profile: ProfileViewModel) {
+        
         self.profile = profile
-        mainRendering()
+        
+        self.messageLabel.isHidden = true
+        self.mainRendering()
         if let pinnRepo = profile.pinnedRepositories {
             self.pinnedRepos = pinnRepo
-            self.pinCollectionview.reloadData()
+            DispatchQueue.main.async {
+                self.pinCollectionview.reloadData()
+            }
         }
         
         if let topRepo = profile.topRepositories {
             self.topRepos = topRepo
-            self.topCollectionview.reloadData()
+            DispatchQueue.main.async {
+                self.topCollectionview.reloadData()
+            }
         }
         
         if let startRepo = profile.startedRepositories {
             self.startRepos = startRepo
-            self.startCollectionview.reloadData()
+            DispatchQueue.main.async {
+                self.startCollectionview.reloadData()
+            }
+        }
+    }
+    
+    @objc func loadMorePinnedRepos(refreshControl: UIRefreshControl) {
+        
+        if let repos = presenter?.loadMorePinnedRepors(count: profile.pinnedRepositories.count){
+            self.startRepos = repos
+            DispatchQueue.main.async {
+                self.pinCollectionview.reloadData()
+            }
+        }
+        refreshControl.endRefreshing()
+    }
+    
+    @objc func loadMoreTopRepos(refreshControl: UIRefreshControl) {
+        
+        if let repos = presenter?.loadMoreTopRepors(count: profile.topRepositories.count) {
+            self.topRepos = repos
+            DispatchQueue.main.async {
+                self.topCollectionview.reloadData()
+            }
+        }
+        refreshControl.endRefreshing()
+    }
+    
+    @objc func loadMoreStartRepos(refreshControl: UIRefreshControl) {
+        
+        if let repos = presenter?.loadMoreStartedRepors(count: profile.startedRepositories.count) {
+            self.startRepos = repos
+            DispatchQueue.main.async {
+                self.startCollectionview.reloadData()
+            }
+        }
+        
+        refreshControl.endRefreshing()
+    }
+    @objc func loadAllPinnedRepos() {
+        
+        if let repos = presenter?.loadMorePinnedRepors(count: profile.pinnedRepositories.count){
+            self.startRepos = repos
+            DispatchQueue.main.async {
+                self.pinCollectionview.reloadData()
+            }
+        }
+    }
+    
+    @objc func loadAllTopRepos() {
+        
+        if let repos = presenter?.loadMoreTopRepors(count: profile.topRepositories.count) {
+            self.topRepos = repos
+            
+            DispatchQueue.main.async {
+                self.topCollectionview.reloadData()
+            }
+        }
+    }
+    
+    @objc func loadAllStartRepos() {
+        
+        if let repos = presenter?.loadMoreStartedRepors(count: profile.startedRepositories.count) {
+            self.startRepos = repos
+            DispatchQueue.main.async {
+                self.startCollectionview.reloadData()
+            }
         }
     }
 }
 
 
 extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout  {
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView.tag == 777 {
             return self.pinnedRepos.count
-        }
-        if collectionView.tag == 787 {
+        }else if collectionView.tag == 787 {
             return self.topRepos.count
         }else{
             return self.startRepos.count
@@ -438,9 +484,8 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFl
         var repo: RepositoryViewModel
         
         if collectionView.tag == 777 {
-            repo = topRepos[indexPath.row]
-        }
-        if collectionView.tag == 787 {
+            repo = pinnedRepos[indexPath.row]
+        }else if collectionView.tag == 787 {
             repo = topRepos[indexPath.row]
         }else{
             repo = startRepos[indexPath.row]

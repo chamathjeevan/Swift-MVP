@@ -122,9 +122,11 @@ class ProfileServices: ProfileServicesProtocol {
                     startedRepos.append(Repository(id: UUID(), name: repoName, title: repoTitle, description: repoDescription, stargazerCount: repoStargazer, primaryLanguage: repoLanguage))
                 }
                 let profile = Profile(id: UUID(), imageUrl: userData.avatarUrl, name: userData.name!, login: "setaylor", email: userData.email, followers: "\(userData.followers.totalCount)", following: "\(userData.following.totalCount)", pinnedRepositories: pinnedRepos, topRepositories: topRepos, startedRepositories: startedRepos)
-                completion(.success(profile))
+
+               completion(.success(profile))
             case .failure(let error):
                 completion(.failure(error))
             }
         }
     }
+}
