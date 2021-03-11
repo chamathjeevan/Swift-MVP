@@ -31,7 +31,7 @@ class ViewController: UIViewController,PresenterDelegate {
         let label =   UILabel()
         label.text = "Profile"
         label.textAlignment = .center
-        label.font = UIFont(name:"HelveticaNeue-Bold", size: 20)
+        label.font = UIFont(name:"SourceSansPro-Bold", size: 20)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -73,7 +73,7 @@ class ViewController: UIViewController,PresenterDelegate {
         var bioView = UIView()
         
         if let pro = profile {
-            bioView = addProfileBioView(profileName: pro.name, loggin: pro.login, email: pro.email, follower: pro.followers, following: pro.following)
+            bioView = addProfileBioView(profileName: pro.name,imageUrl: pro.imageUrl,loggin: pro.login, email: pro.email, follower: pro.followers, following: pro.following)
         }
         scrollView.addSubview(bioView)
         bioView.translatesAutoresizingMaskIntoConstraints = false
@@ -111,6 +111,8 @@ class ViewController: UIViewController,PresenterDelegate {
         pinCollectionview.tag = 777
         pinCollectionview.dataSource = self
         pinCollectionview.delegate = self
+        pinCollectionview.bounces = true
+        pinCollectionview.alwaysBounceVertical = true
         let pinnedRefresher = UIRefreshControl()
         
         pinnedRefresher.attributedTitle = NSAttributedString(string: "Load more pinned repos")
@@ -190,7 +192,7 @@ class ViewController: UIViewController,PresenterDelegate {
         
         scrollView.addSubview(startCollectionview)
     }
-    func addProfileBioView(profileName:String,loggin:String,email:String,follower:String,following:String)-> UIView{
+    func addProfileBioView(profileName:String,imageUrl:String,loggin:String,email:String,follower:String,following:String)-> UIView{
         
         let bioView = UIView()
         
@@ -204,12 +206,12 @@ class ViewController: UIViewController,PresenterDelegate {
         bioView.addConstraint(NSLayoutConstraint(item: profileImage, attribute: .leading, relatedBy: .equal, toItem: bioView, attribute: .leading, multiplier: 1, constant: 16))
         profileImage.addConstraint(NSLayoutConstraint(item: profileImage, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute,multiplier: 1, constant: 88))
         profileImage.addConstraint(NSLayoutConstraint(item: profileImage, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute,multiplier: 1, constant: 88))
-        
+        profileImage.loadImageUsingCache(withUrl: imageUrl)
         let nameLabel =   UILabel()
         
         nameLabel.text = profileName
         
-        nameLabel.font = UIFont(name:"HelveticaNeue-Bold", size: 32.0)
+        nameLabel.font = UIFont(name:"SourceSansPro-Bold", size: 32.0)
         
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         bioView.addSubview(nameLabel)
@@ -242,7 +244,7 @@ class ViewController: UIViewController,PresenterDelegate {
         bioView.addConstraint(NSLayoutConstraint(item: emailLabel, attribute: .trailing, relatedBy: .equal, toItem: bioView, attribute: .trailing, multiplier: 1, constant: -5))
         
         
-        let followersLabel =  getHeaderLebal(labelText: follower,boldLength: 2)
+        let followersLabel =  getHeaderLebal(labelText: "\(follower) followers",boldLength: follower.count)
         
         bioView.addSubview(followersLabel)
         
@@ -251,7 +253,7 @@ class ViewController: UIViewController,PresenterDelegate {
         bioView.addConstraint(NSLayoutConstraint(item: followersLabel, attribute: .top, relatedBy: .equal, toItem: emailLabel, attribute: .bottom, multiplier: 1, constant: 16))
         bioView.addConstraint(NSLayoutConstraint(item: followersLabel, attribute: .leading, relatedBy: .equal, toItem: bioView, attribute: .leading, multiplier: 1, constant: 16))
         
-        let followingLabel =  getHeaderLebal(labelText: following,boldLength: 2)
+        let followingLabel =  getHeaderLebal(labelText: "\(following) following" ,boldLength: following.count)
         
         bioView.addSubview(followingLabel)
         
@@ -327,14 +329,14 @@ class ViewController: UIViewController,PresenterDelegate {
             
             let attributedTitle = NSMutableAttributedString(string: buttonText)
             
-            let font = UIFont(name:"HelveticaNeue-Bold", size: 20)
+            let font = UIFont(name:"SourceSansPro-Bold", size: 20)
             attributedTitle.addAttributes([.underlineStyle : NSUnderlineStyle.single.rawValue],range: NSRange(location: 0, length:buttonText.count))
             attributedTitle.addAttributes([.foregroundColor : UIColor.black],range: NSRange(location: 0, length: buttonText.count))
             attributedTitle.addAttributes([.font : font!],range: NSRange(location: 0, length: buttonText.count))
             
             button.setAttributedTitle(attributedTitle, for: .selected)
             button.setAttributedTitle(attributedTitle, for: .normal)
-            button.titleLabel?.font = UIFont(name:"HelveticaNeue-Bold", size: 16)
+            button.titleLabel?.font = UIFont(name:"SourceSansPro-Bold", size: 16)
             button.translatesAutoresizingMaskIntoConstraints = false
             button.heightAnchor.constraint(equalToConstant: 32).isActive = true
             button.widthAnchor.constraint(equalToConstant: 90).isActive = true
@@ -348,7 +350,7 @@ class ViewController: UIViewController,PresenterDelegate {
             let label =   UILabel()
             label.text = labelText
             label.textAlignment = .left
-            label.font = UIFont(name:"HelveticaNeue-Bold", size: 24)
+            label.font = UIFont(name:"SourceSansPro-Bold", size: 24)
             label.translatesAutoresizingMaskIntoConstraints = false
             label.heightAnchor.constraint(equalToConstant: 32).isActive = true
             label.widthAnchor.constraint(equalToConstant: 250).isActive = true
@@ -364,13 +366,19 @@ class ViewController: UIViewController,PresenterDelegate {
             if boldLength == 0 {
                 label.text = labelText
                 label.textAlignment = .left
-                label.font = UIFont(name:"HelveticaNeue", size: 16)
+                label.font = UIFont(name:"SourceSansPro-Regular", size: 16)
             }else{
                 let attributedTitle = NSMutableAttributedString(string: labelText)
-                let font = UIFont(name:"HelveticaNeue", size: 16)
-                let fontBold = UIFont(name:"HelveticaNeue-Bold", size: 16)
+                let font = UIFont(name:"SourceSansPro-Regular", size: 16)
+                let fontBold = UIFont(name:"SourceSansPro-Bold", size: 16)
+                
+                var largeLength = boldLength
+                if(labelText.count < boldLength) {
+                    largeLength = labelText.count
+                }
+                
                 attributedTitle.addAttributes([.font : fontBold!],range: NSRange(location: 0, length: labelText.count))
-                attributedTitle.addAttributes([.font : font!],range: NSRange(location: boldLength, length: labelText.count - boldLength))
+                attributedTitle.addAttributes([.font : font!],range: NSRange(location: largeLength, length: labelText.count - largeLength))
                 label.attributedText = attributedTitle
                 
             }
@@ -437,6 +445,7 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFl
         }else{
             repo = startRepos[indexPath.row]
         }
+        cell.profileImage.loadImageUsingCache(withUrl: profile.imageUrl)
         cell.nameLabel.text = repo.name
         cell.titleLabel.text = repo.title
         cell.descriptionLabel.text = repo.description
