@@ -27,7 +27,7 @@ extension Network: HTTPNetworkTransportPreflightDelegate {
 
     func networkTransport(_ networkTransport: HTTPNetworkTransport, willSend request: inout URLRequest) {
         var headers = request.allHTTPHeaderFields ?? [String: String]()
-        headers["Authorization"] = "Bearer e2132ebf4a3ec3c7c549502436c0e96a1c62f8ea"
+        headers["Authorization"] = "Bearer 6337f481fd6cb24b7efe7315e1c32d0b0238a17f"
 
         request.allHTTPHeaderFields = headers
     }

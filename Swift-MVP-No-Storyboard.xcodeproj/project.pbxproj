@@ -145,22 +145,19 @@
 		0382D84F25F74B8500581764 /* Swift-MVP-No-Storyboard */ = {
 			isa = PBXGroup;
 			children = (
+				03F5539225F9FF870051FB9B /* Service */,
+				03F5539125F9FF4A0051FB9B /* Presenter */,
+				03F5539025F9FEE50051FB9B /* View */,
 				031B079225F9EF93008077DF /* Resource */,
 				031B076025F9D624008077DF /* GraphQL */,
 				031B075C25F9D5FF008077DF /* schema.json */,
 				03CA4D5025F755B900FD90D1 /* Model */,
 				0382D85025F74B8500581764 /* AppDelegate.swift */,
 				0382D85225F74B8500581764 /* SceneDelegate.swift */,
-				0382D85425F74B8500581764 /* ViewController.swift */,
 				0382D85C25F74B8600581764 /* Assets.xcassets */,
 				0382D85E25F74B8600581764 /* LaunchScreen.storyboard */,
 				0382D86125F74B8600581764 /* Info.plist */,
 				0382D85925F74B8500581764 /* Swift_MVP_No_Storyboard.xcdatamodeld */,
-				03CA4D7C25F7927C00FD90D1 /* Presenter.swift */,
-				03F8D5CF25F7CB1300DED44F /* RepositoryCell.swift */,
-				03BCC6E325F91A33008E2CC0 /* ProfileServices.swift */,
-				031B076E25F9D90C008077DF /* Network.swift */,
-				031B078C25F9EC32008077DF /* UIImageViewExtention.swift */,
 			);
 			path = "Swift-MVP-No-Storyboard";
 			sourceTree = "<group>";
@@ -184,6 +181,41 @@
 				03F8D5CC25F7C3E100DED44F /* RepositoryViewModel.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		03F5539025F9FEE50051FB9B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				0382D85425F74B8500581764 /* ViewController.swift */,
+				03F8D5CF25F7CB1300DED44F /* RepositoryCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		03F5539125F9FF4A0051FB9B /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				03CA4D7C25F7927C00FD90D1 /* Presenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		03F5539225F9FF870051FB9B /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				03BCC6E325F91A33008E2CC0 /* ProfileServices.swift */,
+				03F5539325F9FFD10051FB9B /* Utility */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		03F5539325F9FFD10051FB9B /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				031B076E25F9D90C008077DF /* Network.swift */,
+				031B078C25F9EC32008077DF /* UIImageViewExtention.swift */,
+			);
+			path = Utility;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

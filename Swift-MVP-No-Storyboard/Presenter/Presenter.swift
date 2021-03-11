@@ -43,8 +43,9 @@ class Presenter : PresenterProtocol {
     func fetchProfile() {
         service.fetchProfile { result in
             switch result {
-            case .failure( _):
-                self.delegate?.render(errorMessage: "An error occurred while fetching GitHub data")
+            case .failure(let error):
+               
+                self.delegate?.render(errorMessage: "\(error)")
             case .success(let profile):
                 self.profile = profile
                 self.profileView = self.mapProfileViewModel(profile)
