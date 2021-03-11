@@ -32,7 +32,7 @@ class RepositoryCell: UICollectionViewCell {
     
     let nameLabel: UILabel = {
         let label =   UILabel()
-        label.font = UIFont(name:"HelveticaNeue", size: 16.0)
+        label.font = UIFont(name:"SourceSansPro-Regular", size: 16.0)
         
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -40,14 +40,14 @@ class RepositoryCell: UICollectionViewCell {
     
     let titleLabel: UILabel = {
         let label =   UILabel()
-        label.font = UIFont(name:"HelveticaNeue-Bold", size: 16.0)
+        label.font = UIFont(name:"SourceSansPro-Bold", size: 16.0)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     let descriptionLabel: UILabel = {
         let label =   UILabel()
-        label.font = UIFont(name:"HelveticaNeue", size: 16.0)
+        label.font = UIFont(name:"SourceSansPro-Regular", size: 16.0)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -62,7 +62,7 @@ class RepositoryCell: UICollectionViewCell {
     
     let starCountLabel: UILabel = {
         let label =   UILabel()
-        label.font = UIFont(name:"HelveticaNeue", size: 16.0)
+        label.font = UIFont(name:"SourceSansPro-Regular", size: 16.0)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -77,7 +77,7 @@ class RepositoryCell: UICollectionViewCell {
     
     let languageLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name:"HelveticaNeue", size: 16.0)
+        label.font = UIFont(name:"SourceSansPro-Regular", size: 16.0)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -131,13 +131,13 @@ class RepositoryCell: UICollectionViewCell {
         
         containerView.addSubview(starCountLabel)
         starCountLabel.addConstraint(NSLayoutConstraint(item: starCountLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute,multiplier: 1, constant: 24))
-        starCountLabel.addConstraint(NSLayoutConstraint(item: starCountLabel, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute,multiplier: 1, constant: 22))
+        starCountLabel.addConstraint(NSLayoutConstraint(item: starCountLabel, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute,multiplier: 1, constant: 44))
         containerView.addConstraint(NSLayoutConstraint(item: starCountLabel, attribute: .top, relatedBy: .equal, toItem: descriptionLabel, attribute: .bottom, multiplier: 1, constant: 16))
         containerView.addConstraint(NSLayoutConstraint(item: starCountLabel, attribute: .leading, relatedBy: .equal, toItem: starImage, attribute: .leading, multiplier: 1, constant: 16))
         
         containerView.addSubview(ovalImage)
         containerView.addConstraint(NSLayoutConstraint(item: ovalImage, attribute: .top, relatedBy: .equal, toItem: descriptionLabel, attribute: .bottom, multiplier: 1, constant: 22))
-        containerView.addConstraint(NSLayoutConstraint(item: ovalImage, attribute: .leading, relatedBy: .equal, toItem: starCountLabel, attribute: .trailing, multiplier: 1, constant: 19))
+        containerView.addConstraint(NSLayoutConstraint(item: ovalImage, attribute: .leading, relatedBy: .equal, toItem: starCountLabel, attribute: .trailing, multiplier: 1, constant: 4))
         ovalImage.addConstraint(NSLayoutConstraint(item: ovalImage, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute,multiplier: 1, constant: 12))
         ovalImage.addConstraint(NSLayoutConstraint(item: ovalImage, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute,multiplier: 1, constant: 12))
         
