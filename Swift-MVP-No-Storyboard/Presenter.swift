@@ -28,7 +28,7 @@ class Presenter : PresenterProtocol {
     private var service: ProfileServicesProtocol
     var delegate: PresenterDelegate?
     private var profile:Profile!
-    private var profileView:ProfileViewModel!
+    var profileView:ProfileViewModel!
     private var pinLimit:Int = 2
     private var pinTop:Int = 2
     private var pinSart:Int = 2
