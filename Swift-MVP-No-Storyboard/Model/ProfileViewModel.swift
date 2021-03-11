@@ -13,4 +13,7 @@ struct ProfileViewModel {
     var email: String
     var followers: String
     var following: String
+    var pinnedRepositories: [RepositoryViewModel]!
+    var topRepositories: [RepositoryViewModel]!
+    var startedRepositories: [RepositoryViewModel]!
 }

@@ -7,11 +7,13 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController,PresenterDelegate {
+    
     var presenter: PresenterProtocol?
     var pinnedRepos = [RepositoryViewModel]()
     var topRepos = [RepositoryViewModel]()
     var startRepos = [RepositoryViewModel]()
+    var profile:ProfileViewModel!
     
     var pinCollectionview: UICollectionView!
     var topCollectionview: UICollectionView!
@@ -34,28 +36,15 @@ class ViewController: UIViewController {
         return label
     }()
     
-    init(with presenter: PresenterProtocol){
-        self.presenter = presenter
-        super.init(nibName: nil, bundle: nil)
-    }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.white
         
-        pinnedRepos.append(RepositoryViewModel(imageUrl: "setaylor", name: "telegraph-android", title: "Telegraph X is Android client", description: "Kotlin", stargazer: "74", language: "Ruby"))
-        pinnedRepos.append(RepositoryViewModel(imageUrl: "setaylor", name: "telegraph-android", title: "Telegraph X is Android client", description: "Kotlin", stargazer: "74", language: "Ruby"))
-        pinnedRepos.append(RepositoryViewModel(imageUrl: "setaylor", name: "telegraph-android", title: "Telegraph X is Android client", description: "Kotlin", stargazer: "74", language: "Ruby"))
+        let profileServices = ProfileServices();
         
-        topRepos.append(RepositoryViewModel(imageUrl: "top setaylor", name: "telegraph-android", title: "Telegraph X is Android client", description: "Ruby", stargazer: "74", language: "Ruby"))
-        topRepos.append(RepositoryViewModel(imageUrl: "top setaylor", name: "telegraph-android", title: "Telegraph X is Android client", description: "Ruby", stargazer: "74", language: "Ruby"))
-        topRepos.append(RepositoryViewModel(imageUrl: "top setaylor", name: "telegraph-android", title: "Telegraph X is Android client", description: "Ruby", stargazer: "74", language: "Ruby"))
-        startRepos.append(RepositoryViewModel(imageUrl: "Start setaylor", name: "telegraph-android", title: "Telegraph X is Android client", description: "C#", stargazer: "74", language: "C#"))
-        startRepos.append(RepositoryViewModel(imageUrl: "Start setaylor", name: "telegraph-android", title: "Telegraph X is Android client", description: "C#", stargazer: "74", language: "C#"))
-        startRepos.append(RepositoryViewModel(imageUrl: "Start setaylor", name: "telegraph-android", title: "Telegraph X is Android client", description: "C#", stargazer: "74", language: "C#"))
+        presenter = Presenter(service: profileServices, delegate: self)
+        
         self.view.addSubview(headerLabel)
         
         let guide = self.view.safeAreaLayoutGuide
@@ -67,7 +56,11 @@ class ViewController: UIViewController {
         headerLabel.leadingAnchor.constraint(equalTo: guide.leadingAnchor).isActive = true
         headerLabel.topAnchor.constraint(equalTo: guide.topAnchor, constant: 16).isActive = true
         headerLabel.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        self.presenter?.fetchProfile()
         
+        
+    }
+    func mainRendering() -> Void {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(scrollView)
         scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
@@ -76,8 +69,12 @@ class ViewController: UIViewController {
         scrollView.heightAnchor.constraint(equalTo: view.heightAnchor).isActive = true
         scrollView.contentSize = CGSize(width: self.view.frame.width, height: 1360)
         
-        let bioView = addProfileBioView()
         
+        var bioView = UIView()
+        
+        if let pro = profile {
+            bioView = addProfileBioView(profileName: pro.name, loggin: pro.login, email: pro.email, follower: pro.followers, following: pro.following)
+        }
         scrollView.addSubview(bioView)
         bioView.translatesAutoresizingMaskIntoConstraints = false
         bioView.backgroundColor = UIColor.white
@@ -117,7 +114,7 @@ class ViewController: UIViewController {
         let pinnedRefresher = UIRefreshControl()
         
         pinnedRefresher.attributedTitle = NSAttributedString(string: "Load more pinned repos")
-        pinnedRefresher.addTarget(self, action: #selector(loadMoreStartRepos), for: .valueChanged)
+        pinnedRefresher.addTarget(self, action: #selector(loadMorePinnedRepos(refreshControl:)), for: .valueChanged)
         pinCollectionview.addSubview(pinnedRefresher)
         pinCollectionview.refreshControl = pinnedRefresher
         scrollView.addSubview(pinCollectionview)
@@ -151,7 +148,7 @@ class ViewController: UIViewController {
         let topRefresher = UIRefreshControl()
         
         topRefresher.attributedTitle = NSAttributedString(string: "Load more top repos")
-        topRefresher.addTarget(self, action: #selector(loadMoreStartRepos), for: .valueChanged)
+        topRefresher.addTarget(self, action: #selector(loadMoreTopRepos), for: .valueChanged)
         topCollectionview.addSubview(topRefresher)
         topCollectionview.refreshControl = topRefresher
         
@@ -192,10 +189,8 @@ class ViewController: UIViewController {
         startCollectionview.refreshControl = startRefresher
         
         scrollView.addSubview(startCollectionview)
-        
     }
-    
-    func addProfileBioView()-> UIView{
+    func addProfileBioView(profileName:String,loggin:String,email:String,follower:String,following:String)-> UIView{
         
         let bioView = UIView()
         
@@ -211,7 +206,9 @@ class ViewController: UIViewController {
         profileImage.addConstraint(NSLayoutConstraint(item: profileImage, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute,multiplier: 1, constant: 88))
         
         let nameLabel =   UILabel()
-        nameLabel.text = "Chamath Jeevan"
+        
+        nameLabel.text = profileName
+        
         nameLabel.font = UIFont(name:"HelveticaNeue-Bold", size: 32.0)
         
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -222,7 +219,7 @@ class ViewController: UIViewController {
         
         bioView.addConstraint(NSLayoutConstraint(item: nameLabel, attribute: .trailing, relatedBy: .equal, toItem: bioView, attribute: .trailing, multiplier: 1, constant: -5))
         
-        let loginLabel = getHeaderLebal(labelText: "setaylor",boldLength: 0)
+        let loginLabel = getHeaderLebal(labelText: loggin,boldLength: 0)
         
         bioView.addSubview(loginLabel)
         
@@ -233,7 +230,7 @@ class ViewController: UIViewController {
         bioView.addConstraint(NSLayoutConstraint(item: loginLabel, attribute: .trailing, relatedBy: .equal, toItem: bioView, attribute: .trailing, multiplier: 1, constant: -5))
         
         
-        let emailLabel =    getHeaderLebal(labelText: "s.e.taylor@gmail.com",boldLength: "s.e.taylor@gmail.com".count)
+        let emailLabel =    getHeaderLebal(labelText: email,boldLength: email.count)
         
         bioView.addSubview(emailLabel)
         
@@ -245,7 +242,7 @@ class ViewController: UIViewController {
         bioView.addConstraint(NSLayoutConstraint(item: emailLabel, attribute: .trailing, relatedBy: .equal, toItem: bioView, attribute: .trailing, multiplier: 1, constant: -5))
         
         
-        let followersLabel =  getHeaderLebal(labelText: "48 followers",boldLength: 2)
+        let followersLabel =  getHeaderLebal(labelText: follower,boldLength: 2)
         
         bioView.addSubview(followersLabel)
         
@@ -254,7 +251,7 @@ class ViewController: UIViewController {
         bioView.addConstraint(NSLayoutConstraint(item: followersLabel, attribute: .top, relatedBy: .equal, toItem: emailLabel, attribute: .bottom, multiplier: 1, constant: 16))
         bioView.addConstraint(NSLayoutConstraint(item: followersLabel, attribute: .leading, relatedBy: .equal, toItem: bioView, attribute: .leading, multiplier: 1, constant: 16))
         
-        let followingLabel =  getHeaderLebal(labelText: "72 following",boldLength: 2)
+        let followingLabel =  getHeaderLebal(labelText: following,boldLength: 2)
         
         bioView.addSubview(followingLabel)
         
@@ -271,24 +268,33 @@ class ViewController: UIViewController {
     }
     
     @objc func loadMorePinnedRepos(refreshControl: UIRefreshControl) {
-        print("TODO : loadMorePinnedRepos")
         
-        // somewhere in your code you might need to call:
-        refreshControl.endRefreshing()     //At some point you could end refreshing.
+        if let repos = presenter?.loadMorePinnedRepors(count: profile.pinnedRepositories.count){
+            self.startRepos = repos
+            self.pinCollectionview.reloadData()
+        }
+        
+        refreshControl.endRefreshing()
     }
     
     @objc func loadMoreTopRepos(refreshControl: UIRefreshControl) {
-        print("TODO : loadMoreTopRepos")
         
-        // somewhere in your code you might need to call:
-        refreshControl.endRefreshing()     //At some point you could end refreshing.
+        if let repos = presenter?.loadMoreTopRepors(count: profile.topRepositories.count) {
+            self.topRepos = repos
+            self.topCollectionview.reloadData()
+        }
+        
+        refreshControl.endRefreshing()
     }
     
     @objc func loadMoreStartRepos(refreshControl: UIRefreshControl) {
-        print("TODO : loadMoreStartRepos")
         
-        // somewhere in your code you might need to call:
-        refreshControl.endRefreshing()     //At some point you could end refreshing.
+        if let repos = presenter?.loadMoreStartedRepors(count: profile.startedRepositories.count) {
+            self.startRepos = repos
+            self.startCollectionview.reloadData()
+        }
+        
+        refreshControl.endRefreshing()
     }
     
     
@@ -353,32 +359,44 @@ class ViewController: UIViewController {
         
         return listLabel
     }
-}
-
-extension ViewController: PresenterDelegate {
-    func renderProfile(profile: ProfileViewModel) {
-        
+    func render(errorMessage: String) {
+        print("dff")
     }
     
-    func render(errorMessage: String) {
-        
-    }
     func renderLoading() {
-        
+        print("dff")
     }
-    func render(profile:ProfileViewModel) {
+    
+    func renderProfile(profile: ProfileViewModel) {
+        self.profile = profile
+        mainRendering()
+        if let pinnRepo = profile.pinnedRepositories {
+            self.pinnedRepos = pinnRepo
+            self.pinCollectionview.reloadData()
+        }
         
+        if let topRepo = profile.topRepositories {
+            self.topRepos = topRepo
+            self.topCollectionview.reloadData()
+        }
+        
+        if let startRepo = profile.startedRepositories {
+            self.startRepos = startRepo
+            self.startCollectionview.reloadData()
+        }
     }
 }
+
+
 extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout  {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView.tag == 777 {
-            return startRepos.count
+            return self.pinnedRepos.count
         }
         if collectionView.tag == 787 {
-            return topRepos.count
+            return self.topRepos.count
         }else{
-            return startRepos.count
+            return self.startRepos.count
         }
     }
     
@@ -389,7 +407,7 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFl
         var repo: RepositoryViewModel
         
         if collectionView.tag == 777 {
-            repo = startRepos[indexPath.row]
+            repo = topRepos[indexPath.row]
         }
         if collectionView.tag == 787 {
             repo = topRepos[indexPath.row]

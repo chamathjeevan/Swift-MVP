@@ -7,10 +7,6 @@
 
 import Foundation
 
-protocol ProfileServicesProtocol: AnyObject {
-  func fetchProfile(completion: @escaping (Result<Profile, Error>) -> Void)
-}
-
 struct Profile {
     var id: UUID
     var imageUrl: String
@@ -19,5 +15,8 @@ struct Profile {
     var email: String
     var followers: String
     var following: String
+    var pinnedRepositories: [Repository]!
+    var topRepositories: [Repository]!
+    var startedRepositories: [Repository]!
 }
 
