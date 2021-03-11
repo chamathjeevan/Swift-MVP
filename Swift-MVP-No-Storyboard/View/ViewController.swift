@@ -391,7 +391,7 @@ class ViewController: UIViewController,PresenterDelegate {
         return listLabel
     }
     func render(errorMessage: String) {
-        print("dff")
+        print(errorMessage)
     }
     
     func renderLoading() {
