@@ -95,7 +95,7 @@ class ViewController: UIViewController,PresenterDelegate {
         scrollView.addSubview(viewAllPinnButton)
         viewAllPinnButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
         viewAllPinnButton.topAnchor.constraint(equalTo: bioView.bottomAnchor).isActive = true
-        
+        viewAllPinnButton.addTarget(self, action: #selector(self.loadAllPinnedRepos), for: .touchUpInside)
         
         
         let layout = UICollectionViewFlowLayout()
@@ -131,7 +131,7 @@ class ViewController: UIViewController,PresenterDelegate {
         scrollView.addSubview(viewAllTopButton)
         viewAllTopButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
         viewAllTopButton.topAnchor.constraint(equalTo: pinCollectionview.bottomAnchor, constant: 24).isActive = true
-        
+        viewAllTopButton.addTarget(self, action: #selector(self.loadAllTopRepos), for: .touchUpInside)
         
         
         let horizontalLayout = UICollectionViewFlowLayout()
@@ -166,7 +166,7 @@ class ViewController: UIViewController,PresenterDelegate {
         scrollView.addSubview(viewAllStarredButton)
         viewAllStarredButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
         viewAllStarredButton.topAnchor.constraint(equalTo: topCollectionview.bottomAnchor, constant: 24).isActive = true
-        
+        viewAllStarredButton.addTarget(self, action: #selector(self.loadAllStartRepos), for: .touchUpInside)
         let horizontalStartLayout = UICollectionViewFlowLayout()
         horizontalStartLayout.itemSize = CGSize(width: 200, height: 164)
         horizontalStartLayout.minimumLineSpacing = 15
@@ -296,7 +296,30 @@ class ViewController: UIViewController,PresenterDelegate {
         
         refreshControl.endRefreshing()
     }
+    @objc func loadAllPinnedRepos() {
+        
+        if let repos = presenter?.loadMorePinnedRepors(count: profile.pinnedRepositories.count){
+            self.startRepos = repos
+            self.pinCollectionview.reloadData()
+        }
+    }
     
+    @objc func loadAllTopRepos() {
+        
+        if let repos = presenter?.loadMoreTopRepors(count: profile.topRepositories.count) {
+            self.topRepos = repos
+            self.topCollectionview.reloadData()
+        }
+    }
+    
+    @objc func loadAllStartRepos() {
+        
+        if let repos = presenter?.loadMoreStartedRepors(count: profile.startedRepositories.count) {
+            self.startRepos = repos
+            self.startCollectionview.reloadData()
+        }
+    }
+ 
     
     private func getUnderlineButton(buttonText:String) -> UIButton {
         let  underLineButton: UIButton = {

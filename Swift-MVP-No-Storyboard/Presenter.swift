@@ -9,9 +9,9 @@ import Foundation
 protocol PresenterProtocol: AnyObject {
     
     func fetchProfile()
-    func viewAllPinnedRepors()
-    func viewAllTopRepors()
-    func viewAllStartedRepors()
+    func viewAllPinnedRepors() -> [RepositoryViewModel]
+    func viewAllTopRepors() -> [RepositoryViewModel]
+    func viewAllStartedRepors() -> [RepositoryViewModel]
     func loadMorePinnedRepors(count:Int) -> [RepositoryViewModel]
     func loadMoreTopRepors(count:Int) -> [RepositoryViewModel]
     func loadMoreStartedRepors(count:Int) -> [RepositoryViewModel]
@@ -88,12 +88,42 @@ class Presenter : PresenterProtocol {
         return profileViewModel
     }
     
-    func viewAllPinnedRepors() {
+    func viewAllPinnedRepors()  -> [RepositoryViewModel]{
+        var pinnedRepoViewModels = [RepositoryViewModel]()
+        
+        guard let topRepos =  profile.pinnedRepositories else {
+            return [RepositoryViewModel]()
+        }
+        for i in 0 ..< topRepos.count {
+            
+            pinnedRepoViewModels.append(RepositoryViewModel(imageUrl: "", name: topRepos[i].name, title: topRepos[i].title, description: topRepos[i].description, stargazer: topRepos[i].stargazerCount, language: topRepos[i].primaryLanguage))
+        }
+        return pinnedRepoViewModels
     }
     
-    func viewAllTopRepors() {
+    func viewAllTopRepors()  -> [RepositoryViewModel] {
+        var topRepoViewModels = [RepositoryViewModel]()
+        
+        guard let topRepos =  profile.topRepositories else {
+            return [RepositoryViewModel]()
+        }
+        for i in 0 ..< topRepos.count {
+            
+            topRepoViewModels.append(RepositoryViewModel(imageUrl: "", name: topRepos[i].name, title: topRepos[i].title, description: topRepos[i].description, stargazer: topRepos[i].stargazerCount, language: topRepos[i].primaryLanguage))
+        }
+        return topRepoViewModels
     }
-    func viewAllStartedRepors() {
+    func viewAllStartedRepors()  -> [RepositoryViewModel] {
+        var starredRepoViewModels = [RepositoryViewModel]()
+        
+        guard let startedRepos =  profile.startedRepositories else {
+            return [RepositoryViewModel]()
+        }
+        for i in 0 ..< startedRepos.count {
+            
+            starredRepoViewModels.append(RepositoryViewModel(imageUrl: "", name: startedRepos[i].name, title: startedRepos[i].title, description: startedRepos[i].description, stargazer: startedRepos[i].stargazerCount, language: startedRepos[i].primaryLanguage))
+        }
+        return starredRepoViewModels
     }
     
     func loadMorePinnedRepors(count: Int) -> [RepositoryViewModel] {
