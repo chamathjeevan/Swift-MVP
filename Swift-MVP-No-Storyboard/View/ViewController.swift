@@ -21,7 +21,11 @@ class ViewController: UIViewController,PresenterDelegate {
     
     var activityView: UIActivityIndicatorView?
     
-    var cellId = "repoCell"
+    var cellIdPinned = "pinnedCell"
+    var cellIdTop = "topCell"
+    var cellIdStart = "startCell"
+    var cellIdMore = "cellIdMore"
+    
     let caption = "View All"
     let scrollView: UIScrollView = {
         let scroll = UIScrollView()
@@ -127,7 +131,8 @@ class ViewController: UIViewController,PresenterDelegate {
         let pinnedFrame =  CGRect(x: 16, y: 248, width: self.view.frame.width - 32, height: 525)
         
         pinCollectionview = UICollectionView(frame: pinnedFrame, collectionViewLayout: layout)
-        pinCollectionview?.register(RepositoryCell.self, forCellWithReuseIdentifier: cellId)
+        pinCollectionview?.register(RepositoryCell.self, forCellWithReuseIdentifier: cellIdPinned)
+        pinCollectionview?.register(LoadMoreCell.self, forCellWithReuseIdentifier: cellIdMore)
         pinCollectionview?.backgroundColor = UIColor.white
         pinCollectionview.tag = 777
         pinCollectionview.dataSource = self
@@ -135,13 +140,6 @@ class ViewController: UIViewController,PresenterDelegate {
         pinCollectionview.bounces = true
         pinCollectionview.bounces = true
         pinCollectionview.alwaysBounceVertical = true
-        
-        let pinnedRefresher = UIRefreshControl()
-        
-        pinnedRefresher.attributedTitle = NSAttributedString(string: "Load more pinned repos")
-        pinnedRefresher.addTarget(self, action: #selector(loadMorePinnedRepos(refreshControl:)), for: .valueChanged)
-        pinCollectionview.addSubview(pinnedRefresher)
-        pinCollectionview.refreshControl = pinnedRefresher
         scrollView.addSubview(pinCollectionview)
         
         
@@ -165,17 +163,12 @@ class ViewController: UIViewController,PresenterDelegate {
         horizontalLayout.scrollDirection = .horizontal
         let topFrame =  CGRect(x: 16, y: 845, width: self.view.frame.width - 32, height: 164)
         topCollectionview = UICollectionView(frame: topFrame, collectionViewLayout: horizontalLayout)
-        topCollectionview?.register(RepositoryCell.self, forCellWithReuseIdentifier: cellId)
+        topCollectionview?.register(RepositoryCell.self, forCellWithReuseIdentifier: cellIdTop)
+        topCollectionview?.register(LoadMoreCell.self, forCellWithReuseIdentifier: cellIdMore)
         topCollectionview?.backgroundColor = UIColor.white
         topCollectionview.tag = 787
         topCollectionview.dataSource = self
         topCollectionview.delegate = self
-        let topRefresher = UIRefreshControl()
-        
-        topRefresher.attributedTitle = NSAttributedString(string: "Load more top repos")
-        topRefresher.addTarget(self, action: #selector(loadMoreTopRepos), for: .valueChanged)
-        topCollectionview.addSubview(topRefresher)
-        topCollectionview.refreshControl = topRefresher
         
         scrollView.addSubview(topCollectionview)
         
@@ -198,20 +191,14 @@ class ViewController: UIViewController,PresenterDelegate {
         horizontalStartLayout.scrollDirection = .horizontal
         let startFrame =  CGRect(x: 16, y: 1081, width: self.view.frame.width - 32, height: 164)
         startCollectionview = UICollectionView(frame: startFrame, collectionViewLayout: horizontalStartLayout)
-        startCollectionview?.register(RepositoryCell.self, forCellWithReuseIdentifier: cellId)
+        startCollectionview?.register(RepositoryCell.self, forCellWithReuseIdentifier: cellIdStart)
+        startCollectionview?.register(LoadMoreCell.self, forCellWithReuseIdentifier: cellIdMore)
         startCollectionview?.backgroundColor = UIColor.white
         startCollectionview.tag = 747
         startCollectionview.dataSource = self
         startCollectionview.delegate = self
         startCollectionview!.alwaysBounceVertical = false
         startCollectionview!.alwaysBounceHorizontal = true
-        
-        let startRefresher = UIRefreshControl()
-        
-        startRefresher.attributedTitle = NSAttributedString(string: "Load more started repos")
-        startRefresher.addTarget(self, action: #selector(loadMoreStartRepos), for: .valueChanged)
-        startCollectionview.addSubview(startRefresher)
-        startCollectionview.refreshControl = startRefresher
         
         scrollView.addSubview(startCollectionview)
     }
@@ -399,39 +386,6 @@ class ViewController: UIViewController,PresenterDelegate {
         }
     }
     
-    @objc func loadMorePinnedRepos(refreshControl: UIRefreshControl) {
-        
-        if let repos = presenter?.loadMorePinnedRepors(count: profile.pinnedRepositories.count){
-            self.startRepos = repos
-            DispatchQueue.main.async {
-                self.pinCollectionview.reloadData()
-            }
-        }
-        refreshControl.endRefreshing()
-    }
-    
-    @objc func loadMoreTopRepos(refreshControl: UIRefreshControl) {
-        
-        if let repos = presenter?.loadMoreTopRepors(count: profile.topRepositories.count) {
-            self.topRepos = repos
-            DispatchQueue.main.async {
-                self.topCollectionview.reloadData()
-            }
-        }
-        refreshControl.endRefreshing()
-    }
-    
-    @objc func loadMoreStartRepos(refreshControl: UIRefreshControl) {
-        
-        if let repos = presenter?.loadMoreStartedRepors(count: profile.startedRepositories.count) {
-            self.startRepos = repos
-            DispatchQueue.main.async {
-                self.startCollectionview.reloadData()
-            }
-        }
-        
-        refreshControl.endRefreshing()
-    }
     @objc func loadAllPinnedRepos() {
         
         if let repos = presenter?.loadMorePinnedRepors(count: profile.pinnedRepositories.count){
@@ -462,32 +416,59 @@ class ViewController: UIViewController,PresenterDelegate {
             }
         }
     }
+    
 }
-
 
 extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout  {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView.tag == 777 {
-            return self.pinnedRepos.count
+            return self.pinnedRepos.count + 1
         }else if collectionView.tag == 787 {
-            return self.topRepos.count
+            return self.topRepos.count + 1
         }else{
-            return self.startRepos.count
+            return self.startRepos.count + 1
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath as IndexPath) as! RepositoryCell
+        var cell:RepositoryCell
         
         var repo: RepositoryViewModel
         
         if collectionView.tag == 777 {
+            if indexPath.item == pinnedRepos.count{
+                let moreIndex = IndexPath(row: (indexPath.item  + 1), section: indexPath.section)
+                let moreCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdMore, for: moreIndex as IndexPath) as! LoadMoreCell
+                moreCell.titleLabel.text = "Loadling more repos.."
+                return moreCell
+            }
+            cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdPinned, for: indexPath as IndexPath) as! RepositoryCell
             repo = pinnedRepos[indexPath.row]
         }else if collectionView.tag == 787 {
+            if indexPath.item == topRepos.count{
+                let moreIndex = IndexPath(row: (indexPath.item  + 1), section: indexPath.section)
+                let moreCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdMore, for: moreIndex as IndexPath) as! LoadMoreCell
+                moreCell.titleLabel.text = "Loadling more repos.."
+                return moreCell
+            }
+            
+            cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdTop, for: indexPath as IndexPath) as! RepositoryCell
             repo = topRepos[indexPath.row]
         }else{
+            
+            if indexPath.item == startRepos.count{
+                let moreIndex = IndexPath(row: (indexPath.item  + 1), section: indexPath.section)
+                let moreCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdMore, for: moreIndex as IndexPath) as! LoadMoreCell
+                moreCell.titleLabel.text = "Loadling more repos.."
+                return moreCell
+            }
+            
+            cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdStart, for: indexPath as IndexPath) as! RepositoryCell
+            if indexPath.item == startRepos.count{
+                return cell
+            }
             repo = startRepos[indexPath.row]
         }
         cell.profileImage.loadImageUsingCache(withUrl: profile.imageUrl)
@@ -497,6 +478,37 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFl
         cell.starCountLabel.text = repo.stargazer
         cell.languageLabel.text = repo.language
         return cell
+    }
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        
+        if collectionView.tag == 777 {
+            if indexPath.item == pinnedRepos.count - 1 {
+                if let repos = presenter?.loadMorePinnedRepors(count: profile.pinnedRepositories.count){
+                    self.startRepos = repos
+                    DispatchQueue.main.async {
+                        self.pinCollectionview.reloadData()
+                    }
+                }
+            }
+        }else if collectionView.tag == 787 {
+            if indexPath.item == topRepos.count - 1{
+                if let repos = presenter?.loadMoreTopRepors(count: profile.topRepositories.count) {
+                    self.topRepos = repos
+                    DispatchQueue.main.async {
+                        self.topCollectionview.reloadData()
+                    }
+                }
+            }
+        }else{
+            if indexPath.item == startRepos.count - 1{
+                if let repos = presenter?.loadMoreStartedRepors(count: profile.startedRepositories.count) {
+                    self.startRepos = repos
+                    DispatchQueue.main.async {
+                        self.startCollectionview.reloadData()
+                    }
+                }
+            }
+        }
     }
 }
 
