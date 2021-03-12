@@ -13,7 +13,9 @@ protocol ProfileServicesProtocol: AnyObject {
 class ProfileServices: ProfileServicesProtocol {
     func fetchProfile(completion: @escaping (Result<Profile, Error>) -> Void) {
         
-        Network.shared.apollo.fetch(query: GitProfileQuery()) { result in
+        _ = Network.shared.apollo.watch(query: GitProfileQuery()) { result in
+            guard (try? result.get().data) != nil else { return }
+            
             switch result {
             case .success(let graphQLResult):
                 let userData = graphQLResult.data!.user!
@@ -120,12 +122,9 @@ class ProfileServices: ProfileServicesProtocol {
                     startedRepos.append(Repository(id: UUID(), name: repoName, title: repoTitle, description: repoDescription, stargazerCount: repoStargazer, primaryLanguage: repoLanguage))
                 }
                 let profile = Profile(id: UUID(), imageUrl: userData.avatarUrl, name: userData.name!, login: "setaylor", email: userData.email, followers: "\(userData.followers.totalCount)", following: "\(userData.following.totalCount)", pinnedRepositories: pinnedRepos, topRepositories: topRepos, startedRepositories: startedRepos)
-         
-                
-              
                 completion(.success(profile))
             case .failure(let error):
                 completion(.failure(error))
             }
-        }}
-}
+        }
+    }
