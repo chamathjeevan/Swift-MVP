@@ -14,14 +14,20 @@ class LoadMoreCell: UICollectionViewCell {
     let containerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.cornerRadius = 8
-        view.layer.masksToBounds = true;
-        view.layer.borderWidth = 1
-        view.layer.borderColor = UIColor(displayP3Red: 204/255, green: 204/255, blue: 204/255, alpha: 1).cgColor
+
         return view
     }()
     
-   
+    let titleLabel: UILabel = {
+        let label =   UILabel()
+        label.numberOfLines = 2
+        label.textAlignment = .center
+        label.textColor = UIColor.darkGray
+        label.font = UIFont(name:"SourceSansPro-regular", size: 16.0)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -37,10 +43,12 @@ class LoadMoreCell: UICollectionViewCell {
         containerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0).isActive = true
         containerView.rightAnchor.constraint(equalTo: rightAnchor, constant: 0).isActive = true
         
-        let refresher = UIRefreshControl()
+        containerView.addSubview(titleLabel)
         
-        refresher.attributedTitle = NSAttributedString(string: "Load more...")
-        containerView.addSubview(refresher)
+        containerView.addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .bottom, relatedBy: .equal, toItem: containerView, attribute: .bottom, multiplier: 1, constant: 16))
+        containerView.addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .top, relatedBy: .equal, toItem: containerView, attribute: .top, multiplier: 1, constant: 4))
+        containerView.addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .leading, relatedBy: .equal, toItem: containerView, attribute: .leading, multiplier: 1, constant: 16))
+        containerView.addConstraint(NSLayoutConstraint(item: titleLabel, attribute: .trailing, relatedBy: .equal, toItem: containerView, attribute: .trailing, multiplier: 1, constant: -16))
     }
     
     required init?(coder aDecoder: NSCoder) {
