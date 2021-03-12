@@ -14,3 +14,13 @@ Steps to run the project
 (2) - Restore dependencies packages.
       - Xcode Menu - File ->  Swift Packages -> Reset Package Cache
 
+
+# The project Features
+ 1 - Application is based on MVP architecture (Model View Presenter)   
+ 2 - Screen UI builds without using infacebuilder
+ 3 - GraphQL integration with using Apollo iOS Client
+ 4 - Data cacheing for GraphQL data and Image caching
+ 5 - Unit test coveratge for busniss layer (MVP - Presenter)
+ 6 - Pull to refreash Pull to refreash feature for Virtical and horizontal listing 
+
+
