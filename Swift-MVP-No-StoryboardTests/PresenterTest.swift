@@ -13,23 +13,23 @@ class PresenterTest: XCTestCase {
     override func setUp()  {
         let mockServices = MockProfileServices()
         presenter = Presenter(service: mockServices, delegate: nil)
-       
-       }
-
+        testViewModeFetched()
+    }
+    
     func testViewModeFetched() {
         presenter.fetchProfile()
         XCTAssert(presenter.profileView != nil)
     }
     func testViewAllPinnedRepos(){
-  
+        
         let repos =  presenter.viewAllTopRepors()
         
         XCTAssert(repos.count == 9)
         
     }
-
+    
     func testViewAllTopRepos(){
-  
+        
         let repos =  presenter.viewAllTopRepors()
         
         XCTAssert(repos.count == 9)
@@ -37,7 +37,7 @@ class PresenterTest: XCTestCase {
     }
     
     func testViewAllStarRepos(){
-  
+        
         let repos =  presenter.viewAllStartedRepors()
         
         XCTAssert(repos.count == 9)
