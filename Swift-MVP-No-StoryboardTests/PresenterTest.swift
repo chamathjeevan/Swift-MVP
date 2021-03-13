@@ -20,7 +20,26 @@ class PresenterTest: XCTestCase {
         presenter.fetchProfile()
         XCTAssert(presenter.profileView != nil)
     }
-    func testViewAllPinnedRepos(){
+    func test_A_LoadMorePinnedRepos(){
+        let count = presenter.profileView.pinnedRepositories.count + 3
+        let repos =  presenter.loadMorePinnedRepors()
+        
+        XCTAssert(repos.count == count)
+        
+    }
+    func test_B_LoadMoreTopRepos(){
+        let count = presenter.profileView.topRepositories.count + 3
+        let repos =  presenter.loadMoreTopRepors()
+        XCTAssert(repos.count == count)
+        
+    }
+    func test_C_LoadMoreStartRepos(){
+        let count = presenter.profileView.startedRepositories.count + 3
+        let repos =  presenter.loadMoreStartedRepors()
+        XCTAssert(repos.count == count)
+        
+    }
+    func test_D_ViewAllPinnedRepos(){
         
         let repos =  presenter.viewAllTopRepors()
         
@@ -28,7 +47,7 @@ class PresenterTest: XCTestCase {
         
     }
     
-    func testViewAllTopRepos(){
+    func test_E_ViewAllTopRepos(){
         
         let repos =  presenter.viewAllTopRepors()
         
@@ -36,7 +55,7 @@ class PresenterTest: XCTestCase {
         
     }
     
-    func testViewAllStarRepos(){
+    func test_F_ViewAllStarRepos(){
         
         let repos =  presenter.viewAllStartedRepors()
         
