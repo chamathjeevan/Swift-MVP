@@ -41,7 +41,7 @@ class Presenter : PresenterProtocol {
     
     
     func fetchProfile() {
-        service.fetchProfile { result in
+        service.fetchProfile(loginName: "leerob") { result in
             switch result {
             case .failure(let error):
                 

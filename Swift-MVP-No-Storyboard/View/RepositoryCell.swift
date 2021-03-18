@@ -40,7 +40,7 @@ class RepositoryCell: UICollectionViewCell {
     
     let titleLabel: UILabel = {
         let label =   UILabel()
-        label.font = UIFont(name:"SourceSansPro-Bold", size: 16.0)
+        label.font = UIFont(name:"SourceSansPro-SemiBold", size: 16.0)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -96,7 +96,6 @@ class RepositoryCell: UICollectionViewCell {
         containerView.leftAnchor.constraint(equalTo: leftAnchor, constant: 0).isActive = true
         containerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0).isActive = true
         containerView.rightAnchor.constraint(equalTo: rightAnchor, constant: 0).isActive = true
-        
         containerView.addSubview(profileImage)
         
         containerView.addConstraint(NSLayoutConstraint(item: profileImage, attribute: .top, relatedBy: .equal, toItem: containerView, attribute: .top, multiplier: 1, constant: 16))

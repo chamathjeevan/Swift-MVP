@@ -8,8 +8,8 @@ public final class GitProfileQuery: GraphQLQuery {
   /// The raw GraphQL definition of this operation.
   public let operationDefinition: String =
     """
-    query GitProfile {
-      user(login: "leerob") {
+    query GitProfile($name: String!) {
+      user(login: $name) {
         __typename
         name
         avatarUrl
@@ -75,7 +75,14 @@ public final class GitProfileQuery: GraphQLQuery {
 
   public let operationName: String = "GitProfile"
 
-  public init() {
+  public var name: String
+
+  public init(name: String) {
+    self.name = name
+  }
+
+  public var variables: GraphQLMap? {
+    return ["name": name]
   }
 
   public struct Data: GraphQLSelectionSet {
@@ -83,7 +90,7 @@ public final class GitProfileQuery: GraphQLQuery {
 
     public static var selections: [GraphQLSelection] {
       return [
-        GraphQLField("user", arguments: ["login": "leerob"], type: .object(User.selections)),
+        GraphQLField("user", arguments: ["login": GraphQLVariable("name")], type: .object(User.selections)),
       ]
     }
 

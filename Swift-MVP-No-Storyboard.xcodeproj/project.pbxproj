@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		031B075D25F9D5FF008077DF /* schema.json in Resources */ = {isa = PBXBuildFile; fileRef = 031B075C25F9D5FF008077DF /* schema.json */; };
 		031B076225F9D647008077DF /* GitProfile.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 031B076125F9D647008077DF /* GitProfile.graphql */; };
-		031B076B25F9D72D008077DF /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031B076A25F9D72D008077DF /* API.swift */; };
 		031B076F25F9D90C008077DF /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031B076E25F9D90C008077DF /* Network.swift */; };
 		031B078D25F9EC32008077DF /* UIImageViewExtention.swift in Sources */ = {isa = PBXBuildFile; fileRef = 031B078C25F9EC32008077DF /* UIImageViewExtention.swift */; };
 		031B07A025F9F443008077DF /* SourceSansPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 031B079825F9EFE1008077DF /* SourceSansPro-Bold.ttf */; };
@@ -20,6 +19,9 @@
 		0382D85325F74B8500581764 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0382D85225F74B8500581764 /* SceneDelegate.swift */; };
 		0382D85525F74B8500581764 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0382D85425F74B8500581764 /* ViewController.swift */; };
 		0382D85D25F74B8600581764 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0382D85C25F74B8600581764 /* Assets.xcassets */; };
+		038C0D0426037701001F7ECE /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038C0D0326037701001F7ECE /* API.swift */; };
+		038C0D1426038F13001F7ECE /* SourceSansPro-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 038C0D0D26037C80001F7ECE /* SourceSansPro-SemiBold.ttf */; };
+		038C0D182603934E001F7ECE /* SourceSansPro-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 038C0D172603934E001F7ECE /* SourceSansPro-Light.ttf */; };
 		0392F2DD25F9C8950017B75B /* MockProfileServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0392F2DC25F9C8950017B75B /* MockProfileServices.swift */; };
 		0392F2E125F9C9C60017B75B /* PresenterTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0392F2E025F9C9C60017B75B /* PresenterTest.swift */; };
 		03BCC6E425F91A33008E2CC0 /* ProfileServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BCC6E325F91A33008E2CC0 /* ProfileServices.swift */; };
@@ -44,7 +46,6 @@
 /* Begin PBXFileReference section */
 		031B075C25F9D5FF008077DF /* schema.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = schema.json; sourceTree = "<group>"; };
 		031B076125F9D647008077DF /* GitProfile.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = GitProfile.graphql; sourceTree = "<group>"; };
-		031B076A25F9D72D008077DF /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = API.swift; path = "Swift-MVP-No-Storyboard/API.swift"; sourceTree = SOURCE_ROOT; };
 		031B076E25F9D90C008077DF /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		031B078C25F9EC32008077DF /* UIImageViewExtention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageViewExtention.swift; sourceTree = "<group>"; };
 		031B079825F9EFE1008077DF /* SourceSansPro-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-Bold.ttf"; sourceTree = "<group>"; };
@@ -55,6 +56,9 @@
 		0382D85425F74B8500581764 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		0382D85C25F74B8600581764 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0382D86125F74B8600581764 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		038C0D0326037701001F7ECE /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = API.swift; path = "Swift-MVP-No-Storyboard/API.swift"; sourceTree = SOURCE_ROOT; };
+		038C0D0D26037C80001F7ECE /* SourceSansPro-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-SemiBold.ttf"; sourceTree = "<group>"; };
+		038C0D172603934E001F7ECE /* SourceSansPro-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-Light.ttf"; sourceTree = "<group>"; };
 		0392F2D025F9C8630017B75B /* Swift-MVP-No-StoryboardTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Swift-MVP-No-StoryboardTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0392F2D425F9C8630017B75B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0392F2DC25F9C8950017B75B /* MockProfileServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockProfileServices.swift; sourceTree = "<group>"; };
@@ -91,7 +95,7 @@
 		031B076025F9D624008077DF /* GraphQL */ = {
 			isa = PBXGroup;
 			children = (
-				031B076A25F9D72D008077DF /* API.swift */,
+				038C0D0326037701001F7ECE /* API.swift */,
 				031B076125F9D647008077DF /* GitProfile.graphql */,
 			);
 			path = GraphQL;
@@ -108,6 +112,8 @@
 		031B079525F9EFA4008077DF /* Font */ = {
 			isa = PBXGroup;
 			children = (
+				038C0D172603934E001F7ECE /* SourceSansPro-Light.ttf */,
+				038C0D0D26037C80001F7ECE /* SourceSansPro-SemiBold.ttf */,
 				031B079825F9EFE1008077DF /* SourceSansPro-Bold.ttf */,
 				031B079925F9EFE1008077DF /* SourceSansPro-Regular.ttf */,
 			);
@@ -304,7 +310,9 @@
 			files = (
 				031B07A325F9F446008077DF /* SourceSansPro-Regular.ttf in Resources */,
 				031B07A025F9F443008077DF /* SourceSansPro-Bold.ttf in Resources */,
+				038C0D182603934E001F7ECE /* SourceSansPro-Light.ttf in Resources */,
 				031B076225F9D647008077DF /* GitProfile.graphql in Resources */,
+				038C0D1426038F13001F7ECE /* SourceSansPro-SemiBold.ttf in Resources */,
 				031B075D25F9D5FF008077DF /* schema.json in Resources */,
 				0382D85D25F74B8600581764 /* Assets.xcassets in Resources */,
 			);
@@ -353,10 +361,10 @@
 				0382D85125F74B8500581764 /* AppDelegate.swift in Sources */,
 				03BCC6E425F91A33008E2CC0 /* ProfileServices.swift in Sources */,
 				03F8D5D025F7CB1300DED44F /* RepositoryCell.swift in Sources */,
+				038C0D0426037701001F7ECE /* API.swift in Sources */,
 				03F8D5CD25F7C3E100DED44F /* RepositoryViewModel.swift in Sources */,
 				0382D85325F74B8500581764 /* SceneDelegate.swift in Sources */,
 				031B078D25F9EC32008077DF /* UIImageViewExtention.swift in Sources */,
-				031B076B25F9D72D008077DF /* API.swift in Sources */,
 				03F8D5C725F7C37100DED44F /* ProfileViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

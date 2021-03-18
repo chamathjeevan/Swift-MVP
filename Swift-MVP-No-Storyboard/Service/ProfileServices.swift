@@ -7,13 +7,13 @@
 
 import Foundation
 protocol ProfileServicesProtocol: AnyObject {
-    func fetchProfile(completion: @escaping (Result<Profile, Error>) -> Void)
+    func fetchProfile(loginName:String,completion: @escaping (Result<Profile, Error>) -> Void)
 }
 
 class ProfileServices: ProfileServicesProtocol {
-    func fetchProfile(completion: @escaping (Result<Profile, Error>) -> Void) {
-        
-        _ = Network.shared.apollo.watch(query: GitProfileQuery()) { result in
+    
+    func fetchProfile(loginName:String,completion: @escaping (Result<Profile, Error>) -> Void) {
+        _ = Network.shared.apollo.watch(query: GitProfileQuery(name: loginName)) { result in
             
             switch result {
             case .success(let graphQLResult):
@@ -121,8 +121,8 @@ class ProfileServices: ProfileServicesProtocol {
                     startedRepos.append(Repository(id: UUID(), name: repoName, title: repoTitle, description: repoDescription, stargazerCount: repoStargazer, primaryLanguage: repoLanguage))
                 }
                 let profile = Profile(id: UUID(), imageUrl: userData.avatarUrl, name: userData.name!, login: "setaylor", email: userData.email, followers: "\(userData.followers.totalCount)", following: "\(userData.following.totalCount)", pinnedRepositories: pinnedRepos, topRepositories: topRepos, startedRepositories: startedRepos)
-
-               completion(.success(profile))
+                
+                completion(.success(profile))
             case .failure(let error):
                 completion(.failure(error))
             }

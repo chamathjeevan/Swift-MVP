@@ -22,7 +22,8 @@ class ViewController: UIViewController,PresenterDelegate {
     var cellIdPinned = "pinnedCell"
     var cellIdTop = "topCell"
     var cellIdStart = "startCell"
-    
+    var viewAllStarredButton:UIButton!
+    var pinnedLabel:UILabel!
     var pinnedRefresher = UIRefreshControl()
     let topActivityView = UIActivityIndicatorView()
     let startedActivityView = UIActivityIndicatorView()
@@ -40,7 +41,7 @@ class ViewController: UIViewController,PresenterDelegate {
         let label =   UILabel()
         label.text = "Profile"
         label.textAlignment = .center
-        label.font = UIFont(name:"SourceSansPro-Bold", size: 20)
+        label.font = UIFont(name:"SourceSansPro-SemiBold", size: 20)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -72,9 +73,9 @@ class ViewController: UIViewController,PresenterDelegate {
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
         headerLabel.trailingAnchor.constraint(equalTo: guide.trailingAnchor).isActive = true
         headerLabel.leadingAnchor.constraint(equalTo: guide.leadingAnchor).isActive = true
-        headerLabel.topAnchor.constraint(equalTo: guide.topAnchor, constant: 16).isActive = true
+        headerLabel.topAnchor.constraint(equalTo: guide.topAnchor, constant: -4).isActive = true
         headerLabel.heightAnchor.constraint(equalToConstant: 24).isActive = true
-        
+
         self.view.addSubview(messageLabel)
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
         messageLabel.trailingAnchor.constraint(equalTo: guide.trailingAnchor, constant: -16).isActive = true
@@ -89,11 +90,11 @@ class ViewController: UIViewController,PresenterDelegate {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(scrollView)
         scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        scrollView.topAnchor.constraint(equalTo: headerLabel.bottomAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: headerLabel.bottomAnchor, constant: 40).isActive = true
         scrollView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
         scrollView.heightAnchor.constraint(equalTo: view.heightAnchor).isActive = true
         scrollView.contentSize = CGSize(width: self.view.frame.width, height: 1360)
-        
+
         
         var bioView = UIView()
         
@@ -109,28 +110,24 @@ class ViewController: UIViewController,PresenterDelegate {
         bioView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
         
         bioView.heightAnchor.constraint(equalToConstant: 200).isActive = true
-        
-        let  pinnedLabel = getListTitleLebal(labelText: "Pinned")
+        pinnedLabel = getListTitleLebal(labelText: "Pinned")
         
         scrollView.addSubview(pinnedLabel)
         pinnedLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16).isActive = true
         pinnedLabel.topAnchor.constraint(equalTo: bioView.bottomAnchor).isActive = true
-        
         let  viewAllPinnButton = getUnderlineButton(buttonText: caption)
         scrollView.addSubview(viewAllPinnButton)
         viewAllPinnButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
-        viewAllPinnButton.topAnchor.constraint(equalTo: bioView.bottomAnchor).isActive = true
+        viewAllPinnButton.topAnchor.constraint(equalTo: bioView.bottomAnchor, constant: 8).isActive = true
         viewAllPinnButton.addTarget(self, action: #selector(self.loadAllPinnedRepos), for: .touchUpInside)
-        
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: self.view.frame.width-32, height: 164)
         layout.minimumLineSpacing = 15
         layout.scrollDirection = .vertical
         let pinnedFrame =  CGRect(x: 16, y: 248, width: self.view.frame.width - 32, height: 525)
-        
+     
         pinCollectionview = UICollectionView(frame: pinnedFrame, collectionViewLayout: layout)
         pinCollectionview?.register(RepositoryCell.self, forCellWithReuseIdentifier: cellIdPinned)
-        pinCollectionview?.backgroundColor = UIColor.white
         pinCollectionview.tag = 777
         pinCollectionview.dataSource = self
         pinCollectionview.delegate = self
@@ -138,7 +135,7 @@ class ViewController: UIViewController,PresenterDelegate {
         pinCollectionview.showsVerticalScrollIndicator = true
         pinCollectionview.alwaysBounceVertical = true
         pinCollectionview.contentInset.bottom = 70
-        
+        pinCollectionview.backgroundColor = UIColor.white
         pinnedRefresher.tintColor = UIColor.black
         pinnedRefresher.addTarget(self, action: #selector(loadMorePinnedRepos), for: .valueChanged)
         pinCollectionview.addSubview(pinnedRefresher)
@@ -155,7 +152,7 @@ class ViewController: UIViewController,PresenterDelegate {
         
         scrollView.addSubview(viewAllTopButton)
         viewAllTopButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
-        viewAllTopButton.topAnchor.constraint(equalTo: pinCollectionview.bottomAnchor, constant: 24).isActive = true
+        viewAllTopButton.topAnchor.constraint(equalTo: pinCollectionview.bottomAnchor, constant: 32).isActive = true
         viewAllTopButton.addTarget(self, action: #selector(self.loadAllTopRepos), for: .touchUpInside)
         
         
@@ -180,17 +177,18 @@ class ViewController: UIViewController,PresenterDelegate {
         starredRepoLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16).isActive = true
         starredRepoLabel.topAnchor.constraint(equalTo: topCollectionview.bottomAnchor, constant: 24).isActive = true
         
-        let  viewAllStarredButton = getUnderlineButton(buttonText: caption)
+          viewAllStarredButton = getUnderlineButton(buttonText: caption)
         
         scrollView.addSubview(viewAllStarredButton)
         viewAllStarredButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
-        viewAllStarredButton.topAnchor.constraint(equalTo: topCollectionview.bottomAnchor, constant: 24).isActive = true
+        viewAllStarredButton.topAnchor.constraint(equalTo: topCollectionview.bottomAnchor, constant: 32).isActive = true
         viewAllStarredButton.addTarget(self, action: #selector(self.loadAllStartRepos), for: .touchUpInside)
         let horizontalStartLayout = UICollectionViewFlowLayout()
         horizontalStartLayout.itemSize = CGSize(width: 200, height: 164)
         horizontalStartLayout.minimumLineSpacing = 15
         horizontalStartLayout.scrollDirection = .horizontal
         let startFrame =  CGRect(x: 16, y: 1081, width: self.view.frame.width - 32, height: 164)
+
         startCollectionview = UICollectionView(frame: startFrame, collectionViewLayout: horizontalStartLayout)
         startCollectionview?.register(RepositoryCell.self, forCellWithReuseIdentifier: cellIdStart)
         startCollectionview?.backgroundColor = UIColor.white
@@ -200,9 +198,13 @@ class ViewController: UIViewController,PresenterDelegate {
         startCollectionview!.alwaysBounceVertical = false
         startCollectionview!.alwaysBounceHorizontal = true
         startedActivityView.isHidden = false
+        startedActivityView.frame = CGRect(x: -50, y: 0, width: 60, height: 164)
         startCollectionview.addSubview(startedActivityView)
-        
+        startCollectionview.translatesAutoresizingMaskIntoConstraints = false
         scrollView.addSubview(startCollectionview)
+
+
+       
     }
     func addProfileBioView(profileName:String,imageUrl:String,loggin:String,email:String,follower:String,following:String)-> UIView{
         
@@ -223,7 +225,7 @@ class ViewController: UIViewController,PresenterDelegate {
         
         nameLabel.text = profileName
         
-        nameLabel.font = UIFont(name:"SourceSansPro-Bold", size: 32.0)
+        nameLabel.font = UIFont(name:"SourceSansPro-SemiBold", size: 32.0)
         
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         bioView.addSubview(nameLabel)
@@ -268,7 +270,6 @@ class ViewController: UIViewController,PresenterDelegate {
         let followingLabel =  getHeaderLebal(labelText: "\(following) following" ,boldLength: following.count)
         
         bioView.addSubview(followingLabel)
-        
         followingLabel.addConstraint(NSLayoutConstraint(item: followingLabel, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute,multiplier: 1, constant: 106))
         
         bioView.addConstraint(NSLayoutConstraint(item: followingLabel, attribute: .top, relatedBy: .equal, toItem: emailLabel, attribute: .bottom, multiplier: 1, constant: 16))
@@ -282,17 +283,17 @@ class ViewController: UIViewController,PresenterDelegate {
             
             let attributedTitle = NSMutableAttributedString(string: buttonText)
             
-            let font = UIFont(name:"SourceSansPro-Bold", size: 20)
+            let font = UIFont(name:"SourceSansPro-Regular", size: 16)
             attributedTitle.addAttributes([.underlineStyle : NSUnderlineStyle.single.rawValue],range: NSRange(location: 0, length:buttonText.count))
             attributedTitle.addAttributes([.foregroundColor : UIColor.black],range: NSRange(location: 0, length: buttonText.count))
             attributedTitle.addAttributes([.font : font!],range: NSRange(location: 0, length: buttonText.count))
             
             button.setAttributedTitle(attributedTitle, for: .selected)
             button.setAttributedTitle(attributedTitle, for: .normal)
-            button.titleLabel?.font = UIFont(name:"SourceSansPro-Bold", size: 16)
+            button.titleLabel?.font = UIFont(name:"SourceSansPro-Regular", size: 16)
             button.translatesAutoresizingMaskIntoConstraints = false
-            button.heightAnchor.constraint(equalToConstant: 32).isActive = true
-            button.widthAnchor.constraint(equalToConstant: 90).isActive = true
+            button.heightAnchor.constraint(equalToConstant: 24).isActive = true
+            button.widthAnchor.constraint(equalToConstant: 57).isActive = true
             return button
         }()
         return underLineButton
@@ -303,7 +304,7 @@ class ViewController: UIViewController,PresenterDelegate {
             let label =   UILabel()
             label.text = labelText
             label.textAlignment = .left
-            label.font = UIFont(name:"SourceSansPro-Bold", size: 24)
+            label.font = UIFont(name:"SourceSansPro-SemiBold", size: 24)
             label.translatesAutoresizingMaskIntoConstraints = false
             label.heightAnchor.constraint(equalToConstant: 32).isActive = true
             label.widthAnchor.constraint(equalToConstant: 250).isActive = true
@@ -472,6 +473,7 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFl
     // MARK: - Implementaion of pull to refresh functionaly for UICollectionView views
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        print("pinnedLabel top : \(pinnedLabel.frame.origin.y) height :  \(pinnedLabel.frame.height)")
         if(scrollView.tag == 787) {
             
             let content = ((scrollView.contentSize.width - scrollView.bounds.width) + 30)

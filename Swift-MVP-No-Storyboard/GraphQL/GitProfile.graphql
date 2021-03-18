@@ -1,5 +1,5 @@
-query GitProfile {
-user(login: "leerob") {
+query GitProfile($name: String!) {
+user(login: $name) {
     name
     avatarUrl
     email
