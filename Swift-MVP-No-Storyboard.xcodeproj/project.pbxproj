@@ -20,7 +20,6 @@
 		0382D85325F74B8500581764 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0382D85225F74B8500581764 /* SceneDelegate.swift */; };
 		0382D85525F74B8500581764 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0382D85425F74B8500581764 /* ViewController.swift */; };
 		0382D85D25F74B8600581764 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0382D85C25F74B8600581764 /* Assets.xcassets */; };
-		0382D86025F74B8600581764 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0382D85E25F74B8600581764 /* LaunchScreen.storyboard */; };
 		0392F2DD25F9C8950017B75B /* MockProfileServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0392F2DC25F9C8950017B75B /* MockProfileServices.swift */; };
 		0392F2E125F9C9C60017B75B /* PresenterTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0392F2E025F9C9C60017B75B /* PresenterTest.swift */; };
 		03BCC6E425F91A33008E2CC0 /* ProfileServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BCC6E325F91A33008E2CC0 /* ProfileServices.swift */; };
@@ -55,7 +54,6 @@
 		0382D85225F74B8500581764 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		0382D85425F74B8500581764 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		0382D85C25F74B8600581764 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		0382D85F25F74B8600581764 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0382D86125F74B8600581764 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0392F2D025F9C8630017B75B /* Swift-MVP-No-StoryboardTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Swift-MVP-No-StoryboardTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0392F2D425F9C8630017B75B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -155,7 +153,6 @@
 				0382D85025F74B8500581764 /* AppDelegate.swift */,
 				0382D85225F74B8500581764 /* SceneDelegate.swift */,
 				0382D85C25F74B8600581764 /* Assets.xcassets */,
-				0382D85E25F74B8600581764 /* LaunchScreen.storyboard */,
 				0382D86125F74B8600581764 /* Info.plist */,
 			);
 			path = "Swift-MVP-No-Storyboard";
@@ -308,7 +305,6 @@
 				031B07A325F9F446008077DF /* SourceSansPro-Regular.ttf in Resources */,
 				031B07A025F9F443008077DF /* SourceSansPro-Bold.ttf in Resources */,
 				031B076225F9D647008077DF /* GitProfile.graphql in Resources */,
-				0382D86025F74B8600581764 /* LaunchScreen.storyboard in Resources */,
 				031B075D25F9D5FF008077DF /* schema.json in Resources */,
 				0382D85D25F74B8600581764 /* Assets.xcassets in Resources */,
 			);
@@ -383,17 +379,6 @@
 			targetProxy = 0392F2D525F9C8630017B75B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		0382D85E25F74B8600581764 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0382D85F25F74B8600581764 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		0382D86225F74B8600581764 /* Debug */ = {
