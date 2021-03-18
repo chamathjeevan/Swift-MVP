@@ -7,18 +7,36 @@
 
 import Foundation
 protocol ProfileServicesProtocol: AnyObject {
-    func fetchProfile(loginName:String,completion: @escaping (Result<Profile, Error>) -> Void)
+    func fetchProfile(completion: @escaping (Result<Profile, Error>) -> Void)
 }
 
 class ProfileServices: ProfileServicesProtocol {
     
-    func fetchProfile(loginName:String,completion: @escaping (Result<Profile, Error>) -> Void) {
-        _ = Network.shared.apollo.watch(query: GitProfileQuery(name: loginName)) { result in
+    func fetchProfile(completion: @escaping (Result<Profile, Error>) -> Void) {
+        _ = Network.shared.apollo.watch(query: GitProfileQuery()) { result in
             
             switch result {
             case .success(let graphQLResult):
-                let userData = graphQLResult.data!.user!
+                let userData = graphQLResult.data!.viewer
                 var pinnedRepos = [Repository]()
+                
+                var avatarUrl = ""
+                var diplyName = ""
+                var viewerEmail = ""
+                var viewerLogin = ""
+                
+                if let url =  userData.resultMap["avatarUrl"] as? String{
+                    avatarUrl = url
+                }
+                if let name =  userData.resultMap["name"] as? String{
+                    diplyName = name
+                }
+                if let email =  userData.resultMap["email"] as? String{
+                    viewerEmail = email
+                }
+                if let login =  userData.resultMap["login"] as? String{
+                    viewerLogin = login
+                }
                 
                 // Loading starredRepositories
                 for i in 0 ..< userData.pinnedItems.nodes!.count {
@@ -120,7 +138,8 @@ class ProfileServices: ProfileServicesProtocol {
                     }
                     startedRepos.append(Repository(id: UUID(), name: repoName, title: repoTitle, description: repoDescription, stargazerCount: repoStargazer, primaryLanguage: repoLanguage))
                 }
-                let profile = Profile(id: UUID(), imageUrl: userData.avatarUrl, name: userData.name!, login: "setaylor", email: userData.email, followers: "\(userData.followers.totalCount)", following: "\(userData.following.totalCount)", pinnedRepositories: pinnedRepos, topRepositories: topRepos, startedRepositories: startedRepos)
+   
+                let profile = Profile(id: UUID(), imageUrl: avatarUrl, name: diplyName, login: viewerLogin, email: viewerEmail, followers: "\(userData.followers.totalCount)", following: "\(userData.following.totalCount)", pinnedRepositories: pinnedRepos, topRepositories: topRepos, startedRepositories: startedRepos)
                 
                 completion(.success(profile))
             case .failure(let error):

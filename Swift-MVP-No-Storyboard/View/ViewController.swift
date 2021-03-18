@@ -473,7 +473,7 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegateFl
     // MARK: - Implementaion of pull to refresh functionaly for UICollectionView views
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        print("pinnedLabel top : \(pinnedLabel.frame.origin.y) height :  \(pinnedLabel.frame.height)")
+
         if(scrollView.tag == 787) {
             
             let content = ((scrollView.contentSize.width - scrollView.bounds.width) + 30)
