@@ -14,7 +14,6 @@ class ProfileServices: ProfileServicesProtocol {
     func fetchProfile(completion: @escaping (Result<Profile, Error>) -> Void) {
         
         _ = Network.shared.apollo.watch(query: GitProfileQuery()) { result in
-            guard (try? result.get().data) != nil else { return }
             
             switch result {
             case .success(let graphQLResult):
